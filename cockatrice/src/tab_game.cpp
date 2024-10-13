@@ -602,19 +602,16 @@ void TabGame::replayFinished()
 {
     replayPlayButton->setChecked(false);
     replayPlayButton->setIcon(QPixmap("theme:replay/start"));
-    replayFastForwardButton->setEnabled(false);
 }
 
 void TabGame::replayPlayButtonToggled(bool checked)
 {
     if (checked) { // start replay
         replayPlayButton->setIcon(QPixmap("theme:replay/pause"));
-        replayFastForwardButton->setEnabled(true);
 
         timelineWidget->startReplay();
     } else { // pause replay
         replayPlayButton->setIcon(QPixmap("theme:replay/start"));
-        replayFastForwardButton->setEnabled(false);
 
         timelineWidget->stopReplay();
     }
@@ -1714,7 +1711,6 @@ void TabGame::createReplayDock()
     connect(replayPlayButton, SIGNAL(toggled(bool)), this, SLOT(replayPlayButtonToggled(bool)));
     replayFastForwardButton = new QToolButton;
     replayFastForwardButton->setIconSize(QSize(32, 32));
-    replayFastForwardButton->setEnabled(false);
     replayFastForwardButton->setIcon(QPixmap("theme:replay/fastforward"));
     replayFastForwardButton->setCheckable(true);
     connect(replayFastForwardButton, SIGNAL(toggled(bool)), this, SLOT(replayFastForwardButtonToggled(bool)));
