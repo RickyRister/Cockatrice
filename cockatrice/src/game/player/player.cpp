@@ -3433,6 +3433,18 @@ void Player::actCardCounterTrigger()
     sendGameCommand(prepareGameCommand(commandList));
 }
 
+/**
+ * @brief returns true if the zone is a unwritable reveal zone view (eg card reveal windows)
+ */
+static bool isUmmodifiableRevealZone(CardZone *zone)
+{
+    if (zone && zone->getIsView()) {
+        auto *view = dynamic_cast<ZoneViewZone *>(zone);
+        return view->getRevealZone() && !view->getWriteableRevealZone();
+    }
+    return false;
+}
+
 void Player::actPlay()
 {
     QList<CardItem *> selectedCards;
@@ -3442,7 +3454,7 @@ void Player::actPlay()
     }
 
     for (auto &card : selectedCards) {
-        if (card) {
+        if (card && !isUmmodifiableRevealZone(card->getZone())) {
             const bool cipt = card->getInfo() ? card->getInfo()->getCipt() : false;
             playCard(card, false, cipt);
         }
@@ -3458,7 +3470,7 @@ void Player::actHide()
     }
 
     for (auto &card : selectedCards) {
-        if (card) {
+        if (card && isUmmodifiableRevealZone(card->getZone())) {
             card->getZone()->removeCard(card);
         }
     }
@@ -3473,7 +3485,7 @@ void Player::actPlayFacedown()
     }
 
     for (auto &card : selectedCards) {
-        if (card) {
+        if (card && !isUmmodifiableRevealZone(card->getZone())) {
             playCard(card, true, false);
         }
     }
