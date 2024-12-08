@@ -3435,26 +3435,47 @@ void Player::actCardCounterTrigger()
 
 void Player::actPlay()
 {
-    auto *card = game->getActiveCard();
-    if (card) {
-        const bool cipt = card->getInfo() ? card->getInfo()->getCipt() : false;
-        playCard(card, false, cipt);
+    QList<CardItem *> selectedCards;
+    for (const auto &item : scene()->selectedItems()) {
+        auto *card = static_cast<CardItem *>(item);
+        selectedCards.append(card);
+    }
+
+    for (auto &card : selectedCards) {
+        if (card) {
+            const bool cipt = card->getInfo() ? card->getInfo()->getCipt() : false;
+            playCard(card, false, cipt);
+        }
     }
 }
 
 void Player::actHide()
 {
-    auto *card = game->getActiveCard();
-    if (card) {
-        card->getZone()->removeCard(card);
+    QList<CardItem *> selectedCards;
+    for (const auto &item : scene()->selectedItems()) {
+        auto *card = static_cast<CardItem *>(item);
+        selectedCards.append(card);
+    }
+
+    for (auto &card : selectedCards) {
+        if (card) {
+            card->getZone()->removeCard(card);
+        }
     }
 }
 
 void Player::actPlayFacedown()
 {
-    auto *card = game->getActiveCard();
-    if (card) {
-        playCard(card, true, false);
+    QList<CardItem *> selectedCards;
+    for (const auto &item : scene()->selectedItems()) {
+        auto *card = static_cast<CardItem *>(item);
+        selectedCards.append(card);
+    }
+
+    for (auto &card : selectedCards) {
+        if (card) {
+            playCard(card, true, false);
+        }
     }
 }
 
