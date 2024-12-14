@@ -21,6 +21,8 @@ class DlgMoveTopCardsUntil : public QDialog
     void validateAndAccept();
     bool validateMatchExists(const FilterString &filterString);
 
+    void showSearchSyntaxHelp();
+
 public:
     explicit DlgMoveTopCardsUntil(QWidget *parent = nullptr, QString expr = QString(), uint numberOfHits = 1);
     QString getExpr() const;

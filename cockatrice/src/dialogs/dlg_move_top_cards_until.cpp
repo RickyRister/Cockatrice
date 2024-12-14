@@ -1,5 +1,6 @@
 #include "dlg_move_top_cards_until.h"
 
+#include "../client/ui/search_syntax_help.h"
 #include "../game/cards/card_database.h"
 #include "../game/cards/card_database_manager.h"
 #include "../game/filters/filter_string.h"
@@ -11,6 +12,7 @@
 #include <QMessageBox>
 #include <QSpinBox>
 #include <QString>
+#include <QTextBrowser>
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -22,6 +24,9 @@ DlgMoveTopCardsUntil::DlgMoveTopCardsUntil(QWidget *parent, QString _expr, uint 
     exprEdit->setFocus();
     exprEdit->setText(_expr);
     exprLabel->setBuddy(exprEdit);
+
+    auto help = exprEdit->addAction(QPixmap("theme:icons/info"), QLineEdit::TrailingPosition);
+    connect(help, &QAction::triggered, this, &DlgMoveTopCardsUntil::showSearchSyntaxHelp);
 
     numberOfHitsLabel = new QLabel(tr("Number of hits:"));
     numberOfHitsEdit = new QSpinBox(this);
@@ -108,4 +113,17 @@ QString DlgMoveTopCardsUntil::getExpr() const
 uint DlgMoveTopCardsUntil::getNumberOfHits() const
 {
     return numberOfHitsEdit->text().toUInt();
+}
+
+void DlgMoveTopCardsUntil::showSearchSyntaxHelp()
+{
+    auto *browser = createSearchSyntaxHelp(this);
+
+    if (!browser) {
+        return;
+    }
+
+    connect(browser, &QTextBrowser::anchorClicked, [=](const QUrl &link) { exprEdit->setText(link.fragment()); });
+    browser->setWindowFlag(Qt::WindowStaysOnTopHint);
+    browser->show();
 }
