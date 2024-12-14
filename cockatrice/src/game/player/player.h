@@ -65,6 +65,7 @@ class StackZone;
 class TabGame;
 class TableZone;
 class ZoneViewZone;
+class DlgMoveTopCardsUntil;
 
 const int MAX_TOKENS_PER_DIALOG = 99;
 
@@ -264,6 +265,7 @@ private:
         *aMoveToTopLibrary, *aMoveToBottomLibrary, *aMoveToHand, *aMoveToGraveyard, *aMoveToExile,
         *aMoveToXfromTopOfLibrary;
 
+    DlgMoveTopCardsUntil *movingCardsUntilWindow;
     bool movingCardsUntil;
     QTimer *moveTopCardTimer;
     QString previousMovingCardsUntilExpr = {};

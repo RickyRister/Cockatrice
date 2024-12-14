@@ -50,6 +50,7 @@ DlgMoveTopCardsUntil::DlgMoveTopCardsUntil(QWidget *parent, QString _expr, uint 
 
     setLayout(mainLayout);
     setWindowTitle(tr("Put top cards on stack until..."));
+    setWindowFlag(Qt::WindowStaysOnTopHint);
 }
 
 /**
@@ -102,17 +103,9 @@ void DlgMoveTopCardsUntil::validateAndAccept()
         return;
     }
 
+    emit exprSet(exprEdit->text());
+    emit numberOfHitsSet(numberOfHitsEdit->text().toUInt());
     accept();
-}
-
-QString DlgMoveTopCardsUntil::getExpr() const
-{
-    return exprEdit->text();
-}
-
-uint DlgMoveTopCardsUntil::getNumberOfHits() const
-{
-    return numberOfHitsEdit->text().toUInt();
 }
 
 void DlgMoveTopCardsUntil::showSearchSyntaxHelp()

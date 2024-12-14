@@ -113,9 +113,9 @@ void PlayerArea::setPlayerZoneId(int _playerZoneId)
 }
 
 Player::Player(const ServerInfo_User &info, int _id, bool _local, bool _judge, TabGame *_parent)
-    : QObject(_parent), game(_parent), movingCardsUntil(false), shortcutsActive(false), lastTokenDestroy(true),
-      lastTokenTableRow(0), id(_id), active(false), local(_local), judge(_judge), mirrored(false), handVisible(false),
-      conceded(false), zoneId(0), dialogSemaphore(false), deck(nullptr)
+    : QObject(_parent), game(_parent), movingCardsUntilWindow(nullptr), movingCardsUntil(false), shortcutsActive(false),
+      lastTokenDestroy(true), lastTokenTableRow(0), id(_id), active(false), local(_local), judge(_judge),
+      mirrored(false), handVisible(false), conceded(false), zoneId(0), dialogSemaphore(false), deck(nullptr)
 {
     userInfo = new ServerInfo_User;
     userInfo->CopyFrom(info);
@@ -1333,22 +1333,37 @@ void Player::actMoveTopCardsUntil()
 {
     stopMoveTopCardsUntil();
 
-    DlgMoveTopCardsUntil dlg(game, previousMovingCardsUntilExpr, previousMovingCardsUntilNumberOfHits);
-    if (!dlg.exec()) {
+    if (movingCardsUntilWindow) {
+        movingCardsUntilWindow->setFocus();
         return;
     }
 
-    previousMovingCardsUntilExpr = dlg.getExpr();
-    previousMovingCardsUntilNumberOfHits = dlg.getNumberOfHits();
+    movingCardsUntilWindow =
+        new DlgMoveTopCardsUntil(game, previousMovingCardsUntilExpr, previousMovingCardsUntilNumberOfHits);
 
-    if (zones.value("deck")->getCards().empty()) {
-        stopMoveTopCardsUntil();
-    } else {
-        movingCardsUntilFilter = FilterString(previousMovingCardsUntilExpr);
-        movingCardsUntilCounter = previousMovingCardsUntilNumberOfHits;
-        movingCardsUntil = true;
-        actMoveTopCardToPlay();
-    }
+    connect(movingCardsUntilWindow, &DlgMoveTopCardsUntil::exprSet, this,
+            [&](const QString &expr) { previousMovingCardsUntilExpr = expr; });
+    connect(movingCardsUntilWindow, &DlgMoveTopCardsUntil::numberOfHitsSet, this,
+            [&](const uint num) { previousMovingCardsUntilNumberOfHits = num; });
+    connect(movingCardsUntilWindow, &DlgMoveTopCardsUntil::finished, this, [&](const int result) {
+        movingCardsUntilWindow->deleteLater();
+        movingCardsUntilWindow = nullptr;
+
+        if (!result) {
+            return;
+        }
+
+        if (zones.value("deck")->getCards().empty()) {
+            stopMoveTopCardsUntil();
+        } else {
+            movingCardsUntilFilter = FilterString(previousMovingCardsUntilExpr);
+            movingCardsUntilCounter = previousMovingCardsUntilNumberOfHits;
+            movingCardsUntil = true;
+            actMoveTopCardToPlay();
+        }
+    });
+
+    movingCardsUntilWindow->show();
 }
 
 void Player::moveOneCardUntil(const CardInfoPtr card)
