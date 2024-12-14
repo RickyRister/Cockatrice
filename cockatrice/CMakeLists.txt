@@ -130,6 +130,7 @@ set(cockatrice_SOURCES
     src/client/tapped_out_interface.cpp
     src/client/ui/theme_manager.cpp
     src/client/ui/tip_of_the_day.cpp
+    src/client/ui/search_syntax_help.cpp
     src/client/translate_counter_name.cpp
     src/client/update_downloader.cpp
     src/server/user/user_context_menu.cpp
