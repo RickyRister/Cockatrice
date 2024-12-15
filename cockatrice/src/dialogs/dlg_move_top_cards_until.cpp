@@ -49,7 +49,6 @@ DlgMoveTopCardsUntil::DlgMoveTopCardsUntil(QWidget *parent, QString _expr, uint 
     mainLayout->addWidget(buttonBox);
 
     setLayout(mainLayout);
-    setWindowFlag(Qt::WindowStaysOnTopHint);
 
     retranslateUi();
 }
@@ -125,6 +124,5 @@ void DlgMoveTopCardsUntil::showSearchSyntaxHelp()
     }
 
     connect(browser, &QTextBrowser::anchorClicked, [=](const QUrl &link) { exprEdit->setText(link.fragment()); });
-    browser->setWindowFlag(Qt::WindowStaysOnTopHint);
     browser->show();
 }

@@ -1338,6 +1338,7 @@ void Player::actMoveTopCardsUntil()
     stopMoveTopCardsUntil();
 
     if (movingCardsUntilWindow) {
+        movingCardsUntilWindow->raise();
         movingCardsUntilWindow->setFocus();
         return;
     }
