@@ -889,6 +889,10 @@ void Player::retranslateUi()
     while (zoneIterator.hasNext()) {
         zoneIterator.next().value()->retranslateUi();
     }
+
+    if (movingCardsUntilWindow) {
+        movingCardsUntilWindow->retranslateUi();
+    }
 }
 
 void Player::setShortcutsActive()

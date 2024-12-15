@@ -18,7 +18,7 @@
 
 DlgMoveTopCardsUntil::DlgMoveTopCardsUntil(QWidget *parent, QString _expr, uint _numberOfHits) : QDialog(parent)
 {
-    exprLabel = new QLabel(tr("Card name (or search expressions):"));
+    exprLabel = new QLabel();
 
     exprEdit = new QLineEdit(this);
     exprEdit->setFocus();
@@ -28,7 +28,7 @@ DlgMoveTopCardsUntil::DlgMoveTopCardsUntil(QWidget *parent, QString _expr, uint 
     auto help = exprEdit->addAction(QPixmap("theme:icons/info"), QLineEdit::TrailingPosition);
     connect(help, &QAction::triggered, this, &DlgMoveTopCardsUntil::showSearchSyntaxHelp);
 
-    numberOfHitsLabel = new QLabel(tr("Number of hits:"));
+    numberOfHitsLabel = new QLabel();
     numberOfHitsEdit = new QSpinBox(this);
     numberOfHitsEdit->setRange(1, 99);
     numberOfHitsEdit->setValue(_numberOfHits);
@@ -49,8 +49,16 @@ DlgMoveTopCardsUntil::DlgMoveTopCardsUntil(QWidget *parent, QString _expr, uint 
     mainLayout->addWidget(buttonBox);
 
     setLayout(mainLayout);
-    setWindowTitle(tr("Put top cards on stack until..."));
     setWindowFlag(Qt::WindowStaysOnTopHint);
+
+    retranslateUi();
+}
+
+void DlgMoveTopCardsUntil::retranslateUi()
+{
+    setWindowTitle(tr("Put top cards on stack until..."));
+    exprLabel->setText(tr("Card name (or search expressions):"));
+    numberOfHitsLabel->setText(tr("Number of hits:"));
 }
 
 /**

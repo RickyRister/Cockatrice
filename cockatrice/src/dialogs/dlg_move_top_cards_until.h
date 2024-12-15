@@ -26,6 +26,8 @@ class DlgMoveTopCardsUntil : public QDialog
 public:
     explicit DlgMoveTopCardsUntil(QWidget *parent = nullptr, QString expr = QString(), uint numberOfHits = 1);
 
+    void retranslateUi();
+
 signals:
     void exprSet(QString expr) const;
     void numberOfHitsSet(uint numberOfHits) const;
