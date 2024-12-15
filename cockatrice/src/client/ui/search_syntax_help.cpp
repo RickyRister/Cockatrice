@@ -4,6 +4,13 @@
 #include <QtCore/QFile>
 #include <QtCore/qregularexpression.h>
 
+/**
+ * Creates the Search Syntax Help window by loading the text from search.md and converting it into html.
+ * You will need to manually call browser->show() on it afterward.
+ *
+ * @param parent The parent for the window
+ * @return A pointer to a QTextBrowser, or a nullptr if the file loading fails.
+ */
 QTextBrowser *createSearchSyntaxHelp(QWidget *parent)
 {
     QFile file("theme:help/search.md");
