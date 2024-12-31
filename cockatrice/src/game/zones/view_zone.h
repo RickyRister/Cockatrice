@@ -56,8 +56,7 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void reorganizeCards();
-    void initializeCards(const QList<const ServerInfo_Card *> &cardList = QList<const ServerInfo_Card *>(),
-                         bool _isReversed = false);
+    void initializeCards(const QList<const ServerInfo_Card *> &cardList = QList<const ServerInfo_Card *>());
     void removeCard(int position);
     int getNumberCards() const
     {
@@ -77,6 +76,10 @@ public:
         return writeableRevealZone;
     }
     void setWriteableRevealZone(bool _writeableRevealZone);
+    bool getIsReversed() const
+    {
+        return isReversed;
+    }
 public slots:
     void setGroupBy(CardList::SortOption _groupBy);
     void setSortBy(CardList::SortOption _sortBy);

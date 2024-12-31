@@ -150,8 +150,8 @@ void CardZone::addCard(CardItem *card, const bool reorganize, const int x, const
         return;
     }
 
-    for (auto *view : views) {
-        if ((x <= view->getCards().size()) || (view->getNumberCards() == -1)) {
+    for (ZoneViewZone *view : views) {
+        if (view->getIsReversed() || (x <= view->getCards().size()) || (view->getNumberCards() == -1)) {
             view->addCard(new CardItem(player, nullptr, card->getName(), card->getProviderId(), card->getId()),
                           reorganize, x, y);
         }

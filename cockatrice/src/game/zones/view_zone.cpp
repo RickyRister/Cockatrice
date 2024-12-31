@@ -61,7 +61,7 @@ void ZoneViewZone::paint(QPainter *painter, const QStyleOptionGraphicsItem * /*o
     painter->fillRect(boundingRect(), windowBrush);
 }
 
-void ZoneViewZone::initializeCards(const QList<const ServerInfo_Card *> &cardList, bool _isReversed)
+void ZoneViewZone::initializeCards(const QList<const ServerInfo_Card *> &cardList)
 {
     if (!cardList.isEmpty()) {
         for (int i = 0; i < cardList.size(); ++i)
@@ -74,7 +74,7 @@ void ZoneViewZone::initializeCards(const QList<const ServerInfo_Card *> &cardLis
         cmd.set_player_id(player->getId());
         cmd.set_zone_name(name.toStdString());
         cmd.set_number_cards(numberCards);
-        cmd.set_is_reversed(_isReversed);
+        cmd.set_is_reversed(isReversed);
 
         PendingCommand *pend = player->prepareGameCommand(cmd);
         connect(pend, SIGNAL(finished(Response, CommandContainer, QVariant)), this,

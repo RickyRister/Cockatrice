@@ -134,7 +134,7 @@ ZoneViewWidget::ZoneViewWidget(Player *_player,
 
     connect(zone, SIGNAL(optimumRectChanged()), this, SLOT(resizeToZoneContents()));
     connect(zone, SIGNAL(beingDeleted()), this, SLOT(zoneDeleted()));
-    zone->initializeCards(cardList, _isReversed);
+    zone->initializeCards(cardList);
 
     // QLabel sizes aren't taken into account until the widget is rendered.
     // Force refresh after 1ms to fix glitchy rendering with long QLabels.

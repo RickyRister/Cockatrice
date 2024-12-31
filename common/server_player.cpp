@@ -584,7 +584,7 @@ Response::ResponseCode Server_Player::moveCard(GameEventStorage &ges,
             eventOthers.set_face_down(faceDown);
 
             Event_MoveCard eventPrivate(eventOthers);
-            if (sourceBeingLookedAt || targetzone->getType() != ServerInfo_Zone::HiddenZone ||
+            if (isReversed || sourceBeingLookedAt || targetzone->getType() != ServerInfo_Zone::HiddenZone ||
                 startzone->getType() != ServerInfo_Zone::HiddenZone) {
                 eventPrivate.set_card_id(oldCardId);
                 eventPrivate.set_new_card_id(card->getId());
@@ -592,7 +592,8 @@ Response::ResponseCode Server_Player::moveCard(GameEventStorage &ges,
                 eventPrivate.set_card_id(-1);
                 eventPrivate.set_new_card_id(-1);
             }
-            if (sourceKnownToPlayer || !(faceDown || targetzone->getType() == ServerInfo_Zone::HiddenZone)) {
+            if (isReversed || sourceKnownToPlayer ||
+                !(faceDown || targetzone->getType() == ServerInfo_Zone::HiddenZone)) {
                 QString privateCardName = card->getName();
                 eventPrivate.set_card_name(privateCardName.toStdString());
                 eventPrivate.set_new_card_provider_id(card->getProviderId().toStdString());
