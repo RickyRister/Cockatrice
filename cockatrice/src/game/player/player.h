@@ -192,6 +192,7 @@ public slots:
     void actViewLibrary();
     void actViewHand();
     void actViewTopCards();
+    void actViewBottomCards();
     void actAlwaysRevealTopCard();
     void actAlwaysLookAtTopCard();
     void actViewGraveyard();
@@ -256,11 +257,11 @@ private:
     QAction *aMoveHandToTopLibrary, *aMoveHandToBottomLibrary, *aMoveHandToGrave, *aMoveHandToRfg,
         *aMoveGraveToTopLibrary, *aMoveGraveToBottomLibrary, *aMoveGraveToHand, *aMoveGraveToRfg, *aMoveRfgToTopLibrary,
         *aMoveRfgToBottomLibrary, *aMoveRfgToHand, *aMoveRfgToGrave, *aViewHand, *aViewLibrary, *aViewTopCards,
-        *aAlwaysRevealTopCard, *aAlwaysLookAtTopCard, *aOpenDeckInDeckEditor, *aMoveTopCardToGraveyard,
-        *aMoveTopCardToExile, *aMoveTopCardsToGraveyard, *aMoveTopCardsToExile, *aMoveTopCardsUntil,
-        *aMoveTopCardToBottom, *aViewGraveyard, *aViewRfg, *aViewSideboard, *aDrawCard, *aDrawCards, *aUndoDraw,
-        *aMulligan, *aShuffle, *aMoveTopToPlay, *aMoveTopToPlayFaceDown, *aUntapAll, *aRollDie, *aCreateToken,
-        *aCreateAnotherToken, *aMoveBottomToPlay, *aMoveBottomToPlayFaceDown, *aMoveBottomCardToTop,
+        *aViewBottomCards, *aAlwaysRevealTopCard, *aAlwaysLookAtTopCard, *aOpenDeckInDeckEditor,
+        *aMoveTopCardToGraveyard, *aMoveTopCardToExile, *aMoveTopCardsToGraveyard, *aMoveTopCardsToExile,
+        *aMoveTopCardsUntil, *aMoveTopCardToBottom, *aViewGraveyard, *aViewRfg, *aViewSideboard, *aDrawCard,
+        *aDrawCards, *aUndoDraw, *aMulligan, *aShuffle, *aMoveTopToPlay, *aMoveTopToPlayFaceDown, *aUntapAll, *aRollDie,
+        *aCreateToken, *aCreateAnotherToken, *aMoveBottomToPlay, *aMoveBottomToPlayFaceDown, *aMoveBottomCardToTop,
         *aMoveBottomCardToGraveyard, *aMoveBottomCardToExile, *aMoveBottomCardsToGraveyard, *aMoveBottomCardsToExile,
         *aDrawBottomCard, *aDrawBottomCards;
 

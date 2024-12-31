@@ -142,7 +142,7 @@ void GameScene::rearrange()
     processViewSizeChange(viewSize);
 }
 
-void GameScene::toggleZoneView(Player *player, const QString &zoneName, int numberCards)
+void GameScene::toggleZoneView(Player *player, const QString &zoneName, int numberCards, bool isReversed)
 {
     for (auto &view : zoneViews) {
         ZoneViewZone *temp = view->getZone();
