@@ -482,7 +482,7 @@ Response::ResponseCode Server_Player::moveCard(GameEventStorage &ges,
                         (thisCardProperties->has_face_down() ? thisCardProperties->face_down() : card->getFaceDown());
 
         bool sourceBeingLookedAt;
-        int position = startzone->removeCard(card, sourceBeingLookedAt);
+        int position = startzone->removeCard(card, sourceBeingLookedAt, isReversed);
 
         // "Undo draw" should only remain valid if the just-drawn card stays within the user's hand (e.g., they only
         // reorder their hand). If a just-drawn card leaves the hand then remove cards before it from the list
@@ -554,7 +554,7 @@ Response::ResponseCode Server_Player::moveCard(GameEventStorage &ges,
 
             targetzone->insertCard(card, newX, yCoord);
             int targetLookedCards = targetzone->getCardsBeingLookedAt();
-            bool sourceKnownToPlayer = sourceBeingLookedAt && !card->getFaceDown();
+            bool sourceKnownToPlayer = isReversed || (sourceBeingLookedAt && !card->getFaceDown());
             if (targetzone->getType() == ServerInfo_Zone::HiddenZone && targetLookedCards >= newX) {
                 if (sourceKnownToPlayer) {
                     targetLookedCards += 1;
@@ -584,7 +584,7 @@ Response::ResponseCode Server_Player::moveCard(GameEventStorage &ges,
             eventOthers.set_face_down(faceDown);
 
             Event_MoveCard eventPrivate(eventOthers);
-            if (isReversed || sourceBeingLookedAt || targetzone->getType() != ServerInfo_Zone::HiddenZone ||
+            if (sourceBeingLookedAt || targetzone->getType() != ServerInfo_Zone::HiddenZone ||
                 startzone->getType() != ServerInfo_Zone::HiddenZone) {
                 eventPrivate.set_card_id(oldCardId);
                 eventPrivate.set_new_card_id(card->getId());
@@ -592,8 +592,7 @@ Response::ResponseCode Server_Player::moveCard(GameEventStorage &ges,
                 eventPrivate.set_card_id(-1);
                 eventPrivate.set_new_card_id(-1);
             }
-            if (isReversed || sourceKnownToPlayer ||
-                !(faceDown || targetzone->getType() == ServerInfo_Zone::HiddenZone)) {
+            if (sourceKnownToPlayer || !(faceDown || targetzone->getType() == ServerInfo_Zone::HiddenZone)) {
                 QString privateCardName = card->getName();
                 eventPrivate.set_card_name(privateCardName.toStdString());
                 eventPrivate.set_new_card_provider_id(card->getProviderId().toStdString());
