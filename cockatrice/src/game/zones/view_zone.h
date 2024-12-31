@@ -34,6 +34,7 @@ private:
     bool revealZone, writeableRevealZone;
     CardList::SortOption groupBy, sortBy;
     bool pileView;
+    bool isReversed;
 
     struct GridSize
     {
@@ -49,12 +50,14 @@ public:
                  int _numberCards = -1,
                  bool _revealZone = false,
                  bool _writeableRevealZone = false,
-                 QGraphicsItem *parent = nullptr);
+                 QGraphicsItem *parent = nullptr,
+                 bool _isReversed = false);
     ~ZoneViewZone();
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void reorganizeCards();
-    void initializeCards(const QList<const ServerInfo_Card *> &cardList = QList<const ServerInfo_Card *>());
+    void initializeCards(const QList<const ServerInfo_Card *> &cardList = QList<const ServerInfo_Card *>(),
+                         bool _isReversed = false);
     void removeCard(int position);
     int getNumberCards() const
     {

@@ -424,7 +424,8 @@ Response::ResponseCode Server_Player::moveCard(GameEventStorage &ges,
                                                int xCoord,
                                                int yCoord,
                                                bool fixFreeSpaces,
-                                               bool undoingDraw)
+                                               bool undoingDraw,
+                                               bool isReversed)
 {
     // Disallow controller change to other zones than the table.
     if (((targetzone->getType() != ServerInfo_Zone::PublicZone) || !targetzone->hasCoords()) &&
@@ -542,7 +543,7 @@ Response::ResponseCode Server_Player::moveCard(GameEventStorage &ges,
 
         if (card) {
             ++xIndex;
-            int newX = xCoord + xIndex;
+            int newX = isReversed ? targetzone->getCards().size() - xCoord + xIndex : xCoord + xIndex;
 
             if (targetzone->hasCoords()) {
                 newX = targetzone->getFreeGridColumn(newX, yCoord, card->getName(), faceDown);
@@ -1247,7 +1248,7 @@ Server_Player::cmdMoveCard(const Command_MoveCard &cmd, ResponseContainer & /*rc
         cardsToMove.append(&cmd.cards_to_move().card(i));
     }
 
-    return moveCard(ges, startZone, cardsToMove, targetZone, cmd.x(), cmd.y());
+    return moveCard(ges, startZone, cardsToMove, targetZone, cmd.x(), cmd.y(), true, false, cmd.is_reversed());
 }
 
 Response::ResponseCode
@@ -2008,13 +2009,14 @@ Server_Player::cmdDumpZone(const Command_DumpZone &cmd, ResponseContainer &rc, G
     zoneInfo->set_card_count(numberCards < cards.size() ? cards.size() : numberCards);
 
     for (int i = 0; (i < cards.size()) && (i < numberCards || numberCards == -1); ++i) {
-        Server_Card *card = cards[i];
+        const auto &findId = cmd.is_reversed() ? cards.size() - numberCards + i : i;
+        Server_Card *card = cards[findId];
         QString displayedName = card->getFaceDown() ? QString() : card->getName();
         ServerInfo_Card *cardInfo = zoneInfo->add_card_list();
         cardInfo->set_provider_id(card->getProviderId().toStdString());
         cardInfo->set_name(displayedName.toStdString());
         if (zone->getType() == ServerInfo_Zone::HiddenZone) {
-            cardInfo->set_id(i);
+            cardInfo->set_id(findId);
         } else {
             cardInfo->set_id(card->getId());
             cardInfo->set_x(card->getX());

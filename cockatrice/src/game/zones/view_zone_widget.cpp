@@ -31,7 +31,8 @@ ZoneViewWidget::ZoneViewWidget(Player *_player,
                                int numberCards,
                                bool _revealZone,
                                bool _writeableRevealZone,
-                               const QList<const ServerInfo_Card *> &cardList)
+                               const QList<const ServerInfo_Card *> &cardList,
+                               bool _isReversed)
     : QGraphicsWidget(0, Qt::Window), canBeShuffled(_origZone->getIsShufflable()), player(_player)
 {
     setAcceptHoverEvents(true);
@@ -107,7 +108,7 @@ ZoneViewWidget::ZoneViewWidget(Player *_player,
 
     vbox->addItem(zoneHBox);
 
-    zone = new ZoneViewZone(player, _origZone, numberCards, _revealZone, _writeableRevealZone, zoneContainer);
+    zone = new ZoneViewZone(player, _origZone, numberCards, _revealZone, _writeableRevealZone, zoneContainer, _isReversed);
     connect(zone, SIGNAL(wheelEventReceived(QGraphicsSceneWheelEvent *)), scrollBarProxy,
             SLOT(recieveWheelEvent(QGraphicsSceneWheelEvent *)));
 
@@ -133,7 +134,7 @@ ZoneViewWidget::ZoneViewWidget(Player *_player,
 
     connect(zone, SIGNAL(optimumRectChanged()), this, SLOT(resizeToZoneContents()));
     connect(zone, SIGNAL(beingDeleted()), this, SLOT(zoneDeleted()));
-    zone->initializeCards(cardList);
+    zone->initializeCards(cardList, _isReversed);
 
     // QLabel sizes aren't taken into account until the widget is rendered.
     // Force refresh after 1ms to fix glitchy rendering with long QLabels.
