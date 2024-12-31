@@ -2052,6 +2052,7 @@ Server_Player::cmdDumpZone(const Command_DumpZone &cmd, ResponseContainer &rc, G
         event.set_zone_owner_id(otherPlayer->getPlayerId());
         event.set_zone_name(zone->getName().toStdString());
         event.set_number_cards(numberCards);
+        event.set_is_reversed(cmd.is_reversed());
         ges.enqueueGameEvent(event, playerId);
     }
     rc.setResponseExtension(re);

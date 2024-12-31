@@ -138,7 +138,7 @@ signals:
     void logSetDoesntUntap(Player *player, CardItem *card, bool doesntUntap);
     void logSetPT(Player *player, CardItem *card, QString newPT);
     void logSetAnnotation(Player *player, CardItem *card, QString newAnnotation);
-    void logDumpZone(Player *player, CardZone *zone, int numberCards);
+    void logDumpZone(Player *player, CardZone *zone, int numberCards, bool isReversed = false);
     void logRevealCards(Player *player,
                         CardZone *zone,
                         int cardId,

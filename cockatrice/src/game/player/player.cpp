@@ -2246,7 +2246,7 @@ void Player::eventDumpZone(const Event_DumpZone &event)
     if (!zone) {
         return;
     }
-    emit logDumpZone(this, zone, event.number_cards());
+    emit logDumpZone(this, zone, event.number_cards(), event.is_reversed());
 }
 
 void Player::eventMoveCard(const Event_MoveCard &event, const GameEventContext &context)
