@@ -5,6 +5,7 @@
 #include "../player/player.h"
 #include "pb/command_move_card.pb.h"
 #include "pb/serverinfo_user.pb.h"
+#include "pile_zone.h"
 #include "view_zone.h"
 
 #include <QAction>
@@ -150,7 +151,7 @@ void CardZone::addCard(CardItem *card, const bool reorganize, const int x, const
         return;
     }
 
-    for (ZoneViewZone *view : views) {
+    for (auto *view : views) {
         if (view->getIsReversed() || (x <= view->getCards().size()) || (view->getNumberCards() == -1)) {
             view->addCard(new CardItem(player, nullptr, card->getName(), card->getProviderId(), card->getId()),
                           reorganize, x, y);
