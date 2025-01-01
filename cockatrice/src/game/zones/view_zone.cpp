@@ -172,26 +172,62 @@ void ZoneViewZone::reorganizeCards()
             /*
              * We have a list of card IDs (5,6,7,...N)
              */
-            for (int i = 0; i < origZone->getCards().size(); ++i) {
-                qDebug() << "TRACK origZone CardsAt(i)" << i << origZone->getCards().at(i)->getId();
-            }
-            for (int i = 0; i < cards.size(); ++i) {
-                qDebug() << "TRACK cards CardsAt(i)" << i << cards.at(i)->getId();
-            }
+            // for (int i = 0; i < origZone->getCards().size(); ++i) {
+            //     qDebug() << "TRACK origZone CardsAt(i)" << i << origZone->getCards().at(i)->getId();
+            // }
+            // for (int i = 0; i < cards.size(); ++i) {
+            //     qDebug() << "TRACK cards CardsAt(i)" << i << cards.at(i)->getId();
+            // }
             startId = cards.first()->getId();
-
-            bool problemFound = true;
-            // Detect if the FIRST card was removed, and we really got the 2nd card here
-            for (int i = 0; i < cards.size() - 1; ++i) {
-                if (cards.at(i)->getId() + 1 != cards.at(i + 1)->getId()) {
-
-                    problemFound = !problemFound;
-                    break;
-                }
-            }
+            //
+            // bool problemFound = true;
+            // // Detect if the FIRST card was removed, and we really got the 2nd card here
+            // for (int i = 0; i < cards.size() - 1; ++i) {
+            //     if (cards.at(i)->getId() + 1 != cards.at(i + 1)->getId()) {
+            //
+            //         problemFound = !problemFound;
+            //         break;
+            //     }
+            // }
 
             qDebug() << "TRACK" << "NUMBER CARDS" << numberCards << "CARD SIZE" << cards.size();
             bool isFirstLoad = (numberCards == cards.size());
+            qDebug() << "TRACK" << "IS FIRST LOAD" << isFirstLoad;
+
+            // Sort cards, because i'm desperat
+            // @CHATGPT: How to sort cards by cards.at(i)->getId()
+            std::sort(cards.begin(), cards.end(), [](const auto &a, const auto &b) { return a->getId() < b->getId(); });
+
+            if (isFirstLoad && lowCardId == 0) {
+                lowCardId = cards.first()->getId();
+                highCardId = cards.last()->getId();
+            }//cSScx xX CSSsdvvdsaavabnsgsdnarasads
+
+// I'm out of ideas
+
+            // We had 5,6,7,8,9 in our list. lowCardId = 5
+            // We just checked and now 6 != 5
+            // This means we need to decriment by 1
+            // Update lowCardId = 6, for future reference
+            // Since the deck size got smaller (somehow!) we can update the highcardId
+            // idk what to do with the high card ID tho. If it's removed, nbd?
+
+            if (cards.first()->getId() != lowCardId - 1) {
+                // We removed the first card, subtract one
+                startId -= 1;
+                lowCardId = cards.first()->getId();
+                // highCardId = cards.last()->getId();
+                // ........................................................
+                //
+            } else if (cards.last()->getId() != highCardId) {
+                // We removed the last card, DO NOT TOUCH SHIT??
+                qDebug() << "TRACK" << "TODO SOMETHING??";
+                startId += 1; // THIS NEVER HAPPENED. WHY NOT??
+            }
+
+            // If the top card or bottom card are moved, we need to know.
+            // Lets track them in the class. For shiggles.
+
             // Somehow we need this to flip if its a second time ... ... .......................
             // .....
 
@@ -199,9 +235,9 @@ void ZoneViewZone::reorganizeCards()
             // However, this can be a problem only if the cardsize changed
             // Why did the cardsize change?? It'sm ad at us
             // Trying to figure this out is... WHY HENTAI
-            if (problemFound && !isFirstLoad) {
-                startId -= 1;
-            }
+            // if (problemFound && !isFirstLoad) {
+            //     startId -= 1;
+            // }
         }
 
         // startId = isReversed ? cards.first()->getId() : 0;
@@ -350,6 +386,7 @@ void ZoneViewZone::addCardImpl(CardItem *card, int x, int /*y*/)
     }
 
     if (isReversed) {
+        qDebug() << "TRACK" << "INSERTING CARD AT POSITION" << cards.size();
         cards.append(card);
         // We're adding the newest card to the ass of the array
         // Shouldn't this card have some kind of information for us?
@@ -402,6 +439,7 @@ void ZoneViewZone::removeCard(int position)
         return;
     }
 
+    qDebug() << "TRACK" << "TAKING CARD FROM POSITION" << position;
     CardItem *card = cards.takeAt(position);
     card->deleteLater();
     reorganizeCards();

@@ -29,6 +29,7 @@ private:
 
     QRectF bRect, optimumRect;
     int minRows, numberCards;
+    int lowCardId = 0, highCardId = 0;
     void handleDropEvent(const QList<CardDragItem *> &dragItems, CardZone *startZone, const QPoint &dropPoint);
     CardZone *origZone;
     bool revealZone, writeableRevealZone;
