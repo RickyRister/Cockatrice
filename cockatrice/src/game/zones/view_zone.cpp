@@ -200,7 +200,6 @@ void ZoneViewZone::reorganizeCards()
             // Sort cards, because i'm desperat
             // @CHATGPT: How to sort cards by cards.at(i)->getId()
 
-
             if (isFirstLoad && lowCardId == 0) {
                 lowCardId = cards.first()->getId();
                 highCardId = cards.last()->getId();
@@ -234,8 +233,6 @@ void ZoneViewZone::reorganizeCards()
                 qDebug() << "TRACK" << "CONDITION 4, WE MIGHT HAVE TO DO SOMETHING";
                 lowCardId = cards.first()->getId() + 1; // Because fuck you i guess
             }
-
-
 
             // if (cards.first()->getId() != lowCardId) {
             //     // We removed the first card, subtract one
