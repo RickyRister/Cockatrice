@@ -110,6 +110,10 @@ void ZoneViewZone::zoneDumpReceived(const Response &r)
 // Because of boundingRect(), this function must not be called before the zone was added to a scene.
 void ZoneViewZone::reorganizeCards()
 {
+    if (cards.isEmpty()) {
+        return;
+    }
+
     int cardCount = cards.size();
     if (!origZone->contentsKnown()) {
         auto startId = isReversed ? origZone->getCards().size() - cardCount : 0;
