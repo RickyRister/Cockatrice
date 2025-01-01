@@ -294,7 +294,7 @@ void ZoneViewZone::removeCard(int position)
         position -= cards.first()->getId();
     }
 
-    if (position >= cards.size()) {
+    if (position < 0 || position >= cards.size()) {
         return;
     }
 
