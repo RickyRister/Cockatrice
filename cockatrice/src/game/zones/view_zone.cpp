@@ -113,8 +113,9 @@ void ZoneViewZone::reorganizeCards()
     int cardCount = cards.size();
     if (!origZone->contentsKnown()) {
         auto startId = isReversed ? origZone->getCards().size() - cardCount : 0;
-        for (int i = 0; i < cardCount; ++i, ++startId) {
-            cards[i]->setId(startId);
+        qDebug() << "TRACK" << origZone->getCards().size() << "-" << cardCount << "=" << startId;
+        for (int i = 0; i < cardCount; ++i) {
+            cards[i]->setId(startId + i);
         }
     }
 
@@ -282,7 +283,8 @@ void ZoneViewZone::handleDropEvent(const QList<CardDragItem *> &dragItems,
 void ZoneViewZone::removeCard(int position)
 {
     if (isReversed) {
-        position = origZone->getCards().size() - position;
+        // TODO: comment
+        position -= cards.first()->getId();
     }
 
     if (position >= cards.size()) {
