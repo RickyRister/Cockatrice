@@ -127,8 +127,6 @@ void ZoneViewZone::reorganizeCards()
          * If no jump is detected, add a -1 option
          */
 
-
-
         // const auto &firstCardId = cards.first()->getId();
         // const auto &secondCardId = cards.at(1)->getId();
         //
@@ -204,14 +202,11 @@ void ZoneViewZone::reorganizeCards()
             if (problemFound && !isFirstLoad) {
                 startId -= 1;
             }
-
         }
 
-
-
-         // startId = isReversed ? cards.first()->getId() : 0;
-        qDebug() << "TRACK" << "zone:" << name << "origZone:" << origZone->getCards().size() << "cardCount:" << cardCount
-                 << "startId:" << startId;
+        // startId = isReversed ? cards.first()->getId() : 0;
+        qDebug() << "TRACK" << "zone:" << name << "origZone:" << origZone->getCards().size()
+                 << "cardCount:" << cardCount << "startId:" << startId;
         for (int i = 0; i < cardCount; ++i) {
             cards[i]->setId(startId + i);
         }
@@ -355,7 +350,6 @@ void ZoneViewZone::addCardImpl(CardItem *card, int x, int /*y*/)
     }
 
     if (isReversed) {
-        qDebug() <<
         cards.append(card);
         // We're adding the newest card to the ass of the array
         // Shouldn't this card have some kind of information for us?
