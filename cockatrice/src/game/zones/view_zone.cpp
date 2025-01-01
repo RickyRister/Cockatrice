@@ -296,6 +296,10 @@ void ZoneViewZone::removeCard(int position)
     if (isReversed) {
         // TODO: comment
         position -= cards.first()->getId();
+        if (position < 0 || position >= cards.size()) {
+            reorganizeCards();
+            return;
+        }
     }
 
     if (position < 0 || position >= cards.size()) {
