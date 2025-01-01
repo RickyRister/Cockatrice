@@ -116,8 +116,102 @@ void ZoneViewZone::reorganizeCards()
 
     int cardCount = cards.size();
     if (!origZone->contentsKnown()) {
-        auto startId = isReversed ? origZone->getCards().size() - cardCount : 0;
-        qDebug() << "TRACK" << origZone->getCards().size() << "-" << cardCount << "=" << startId;
+
+        /*
+         * General idea: If the first card is selected, use the 2nd. If the 2nd card is selected, use the first.
+         * We always need to know the "last" card we're working with, to start the baseline.
+         *
+         * If we remove card N, N>1, we have the first card's ID to default on to restore all the other IDs
+         * If we remove the first card, we use the 2nd, which is now the first, and it fucks up.
+         * We can look for a "jump", which would indicate the N>1 card was grabbed.
+         * If no jump is detected, add a -1 option
+         */
+
+
+
+        // const auto &firstCardId = cards.first()->getId();
+        // const auto &secondCardId = cards.at(1)->getId();
+        //
+        // int startId;
+        // if (firstCardId + 1 == secondCardId) {
+        //     // No jump detected, so we removed the first card, reset down by 1
+        //     startId = firstCardId - 1;
+        // } else {
+        //     // Jump detected, so we removed
+        //     startId = firstCardId;
+        // }
+
+        /**
+         * If the first card is taken, every card will be in a row now. If that's teh case, no jump will exist
+         * anywhere. As such, subtract one. If a jump is found anywhere, then we know we can start at the beginning
+         * value instead.
+         */
+        // int jumpOffset = 0;
+        // for (int i = 0; i < cards.size() - 1; i++) {
+        //     if (cards.at(i)->getId() + 1 != cards.at(i + 1)->getId()) {
+        //         qDebug() << "TRACK" << "INCONSISTENCY DETECTED!!, USE THE FIRST CARD";
+        //         jumpOffset = 1;
+        //         break;
+        //     }
+        // }
+        //
+        // if (jumpOffset) {
+        //     qDebug() <<    "TRACK" << "INCONSISTENCY IS DETECTED, SO WE WILL SUBTRACT 1 FROM" ;
+        // }
+        //
+        // int startId = 0;
+        // if (isReversed) {
+        //     if (jumpOffset == 1) {
+        //         startId = cards.at(1)->getId() - jumpOffset;
+        //     } else if (jumpOffset == 0) {
+        //         startId = cards.first()->getId();
+        //     }
+        // }
+
+        int startId = 0;
+
+        if (isReversed) {
+            /*
+             * We have a list of card IDs (5,6,7,...N)
+             */
+            for (int i = 0; i < origZone->getCards().size(); ++i) {
+                qDebug() << "TRACK origZone CardsAt(i)" << i << origZone->getCards().at(i)->getId();
+            }
+            for (int i = 0; i < cards.size(); ++i) {
+                qDebug() << "TRACK cards CardsAt(i)" << i << cards.at(i)->getId();
+            }
+            startId = cards.first()->getId();
+
+            bool problemFound = true;
+            // Detect if the FIRST card was removed, and we really got the 2nd card here
+            for (int i = 0; i < cards.size() - 1; ++i) {
+                if (cards.at(i)->getId() + 1 != cards.at(i + 1)->getId()) {
+
+                    problemFound = !problemFound;
+                    break;
+                }
+            }
+
+            qDebug() << "TRACK" << "NUMBER CARDS" << numberCards << "CARD SIZE" << cards.size();
+            bool isFirstLoad = (numberCards == cards.size());
+            // Somehow we need this to flip if its a second time ... ... .......................
+            // .....
+
+            // The first card was fucked with, we're fucked.
+            // However, this can be a problem only if the cardsize changed
+            // Why did the cardsize change?? It'sm ad at us
+            // Trying to figure this out is... WHY HENTAI
+            if (problemFound && !isFirstLoad) {
+                startId -= 1;
+            }
+
+        }
+
+
+
+         // startId = isReversed ? cards.first()->getId() : 0;
+        qDebug() << "TRACK" << "zone:" << name << "origZone:" << origZone->getCards().size() << "cardCount:" << cardCount
+                 << "startId:" << startId;
         for (int i = 0; i < cardCount; ++i) {
             cards[i]->setId(startId + i);
         }
