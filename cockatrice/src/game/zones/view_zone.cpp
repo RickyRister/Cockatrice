@@ -355,10 +355,14 @@ void ZoneViewZone::addCardImpl(CardItem *card, int x, int /*y*/)
     }
 
     if (isReversed) {
+        qDebug() <<
         cards.append(card);
+        // We're adding the newest card to the ass of the array
+        // Shouldn't this card have some kind of information for us?
     } else {
         // TODO: figure out if we always just prepend anyways
         cards.insert(x, card);
+        qDebug() << "TRACK" << "HOW DID WE END UP HERE??? # MINECRAFT";
     }
 
     card->setParentItem(this);
