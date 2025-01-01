@@ -255,7 +255,14 @@ void ZoneViewZone::addCardImpl(CardItem *card, int x, int /*y*/)
     if (x < 0 || x >= cards.size()) {
         x = cards.size();
     }
-    cards.insert(x, card);
+
+    if (isReversed) {
+        cards.append(card);
+    } else {
+        // TODO: figure out if we always just prepend anyways
+        cards.insert(x, card);
+    }
+
     card->setParentItem(this);
     card->update();
     reorganizeCards();
