@@ -289,6 +289,10 @@ void ZoneViewZone::handleDropEvent(const QList<CardDragItem *> &dragItems,
 
 void ZoneViewZone::removeCard(int position)
 {
+    if (cards.isEmpty()) {
+        return;
+    }
+
     if (isReversed) {
         // TODO: comment
         position -= cards.first()->getId();
