@@ -169,6 +169,9 @@ void ZoneViewZone::reorganizeCards()
         int startId = 0;
 
         if (isReversed) {
+            /////////// Check back with how cards are added/removed from cards[] ig
+            ///// i'm done for one night
+            std::sort(cards.begin(), cards.end(), [](const auto &a, const auto &b) { return a->getId() < b->getId(); });
             /*
              * We have a list of card IDs (5,6,7,...N)
              */
@@ -196,7 +199,7 @@ void ZoneViewZone::reorganizeCards()
 
             // Sort cards, because i'm desperat
             // @CHATGPT: How to sort cards by cards.at(i)->getId()
-            std::sort(cards.begin(), cards.end(), [](const auto &a, const auto &b) { return a->getId() < b->getId(); });
+
 
             if (isFirstLoad && lowCardId == 0) {
                 lowCardId = cards.first()->getId();
@@ -212,18 +215,43 @@ void ZoneViewZone::reorganizeCards()
             // Since the deck size got smaller (somehow!) we can update the highcardId
             // idk what to do with the high card ID tho. If it's removed, nbd?
 
-            if (cards.first()->getId() != lowCardId - 1) {
-                // We removed the first card, subtract one
+            if (cards.first()->getId() == lowCardId) {
+                // Lowest card wasn't removed, do nothing from here?
+                qDebug() << "TRACK" << "CONDITION 1, WE MIGHT HAVE TO DO SOMETHING";
+                // startId += 1;
+            } else if (cards.first()->getId() == lowCardId + 1) {
+                // Lowest card _WAS_ removed. account for this!
                 startId -= 1;
                 lowCardId = cards.first()->getId();
-                // highCardId = cards.last()->getId();
-                // ........................................................
-                //
+                qDebug() << "TRACK" << "CONDITION 2, WE MIGHT HAVE TO DO SOMETHING";
+            } else if (cards.last()->getId() == highCardId) {
+                // Highest card wasn't removed, we're good
+                qDebug() << "TRACK" << "CONDITION 3, WE MIGHT HAVE TO DO SOMETHING";
             } else if (cards.last()->getId() != highCardId) {
-                // We removed the last card, DO NOT TOUCH SHIT??
-                qDebug() << "TRACK" << "TODO SOMETHING??";
-                startId += 1; // THIS NEVER HAPPENED. WHY NOT??
+                // Clearly this means the last card was removed, right? Just... don't do anything stupid
+                // startId += 1;
+                highCardId = cards.last()->getId();
+                qDebug() << "TRACK" << "CONDITION 4, WE MIGHT HAVE TO DO SOMETHING";
+                lowCardId = cards.first()->getId() + 1; // Because fuck you i guess
             }
+
+
+
+            // if (cards.first()->getId() != lowCardId) {
+            //     // We removed the first card, subtract one
+            //     startId -= 1;
+            //     lowCardId = cards.first()->getId();
+            //     // highCardId = cards.last()->getId();
+            //     // ........................................................
+            //     //
+            // }
+            // else if (cards.first()->getId() != lowCardId + 1) {
+            //
+            // } else if (cards.last()->getId() != highCardId) {
+            //     // We removed the last card, DO NOT TOUCH SHIT??
+            //     qDebug() << "TRACK" << "TODO SOMETHING??";
+            //     startId += 1; // THIS NEVER HAPPENED. WHY NOT??
+            // }
 
             // If the top card or bottom card are moved, we need to know.
             // Lets track them in the class. For shiggles.
