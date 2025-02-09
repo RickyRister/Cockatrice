@@ -137,11 +137,7 @@ void VisualDeckStorageWidget::createRootFolderWidget()
 void VisualDeckStorageWidget::updateSortOrder()
 {
     if (folderWidget) {
-        sortWidget->sortFolder(folderWidget);
-        for (VisualDeckStorageFolderDisplayWidget *subFolderWidget :
-             folderWidget->findChildren<VisualDeckStorageFolderDisplayWidget *>()) {
-            sortWidget->sortFolder(subFolderWidget);
-        }
+        folderWidget->sortBy(sortWidget->getComparator());
     }
 }
 
