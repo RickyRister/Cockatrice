@@ -462,8 +462,8 @@ void TabGame::incrementGameTime()
 void TabGame::adminLockChanged(bool lock)
 {
     bool v = !(spectator && !gameInfo.spectators_can_chat() && lock);
-    sayLabel->setVisible(v);
-    sayEdit->setVisible(v);
+    sayLabel->setHidden(!v);
+    sayEdit->setHidden(!v);
 }
 
 bool TabGame::isSpectator()
@@ -1483,9 +1483,9 @@ void TabGame::freeDocksSize()
 
 void TabGame::actResetLayout()
 {
-    cardInfoDock->setVisible(true);
-    playerListDock->setVisible(true);
-    messageLayoutDock->setVisible(true);
+    cardInfoDock->setHidden(false);
+    playerListDock->setHidden(false);
+    messageLayoutDock->setHidden(false);
 
     cardInfoDock->setFloating(false);
     playerListDock->setFloating(false);
@@ -1504,7 +1504,7 @@ void TabGame::actResetLayout()
     addDockWidget(Qt::RightDockWidgetArea, messageLayoutDock);
 
     if (replayDock) {
-        replayDock->setVisible(true);
+        replayDock->setHidden(false);
         replayDock->setFloating(false);
         addDockWidget(Qt::BottomDockWidgetArea, replayDock);
         aReplayDockVisible->setChecked(true);
@@ -1796,25 +1796,25 @@ void TabGame::dockVisibleTriggered()
 {
     QObject *o = sender();
     if (o == aCardInfoDockVisible) {
-        cardInfoDock->setVisible(aCardInfoDockVisible->isChecked());
+        cardInfoDock->setHidden(!aCardInfoDockVisible->isChecked());
         aCardInfoDockFloating->setEnabled(aCardInfoDockVisible->isChecked());
         return;
     }
 
     if (o == aMessageLayoutDockVisible) {
-        messageLayoutDock->setVisible(aMessageLayoutDockVisible->isChecked());
+        messageLayoutDock->setHidden(!aMessageLayoutDockVisible->isChecked());
         aMessageLayoutDockFloating->setEnabled(aMessageLayoutDockVisible->isChecked());
         return;
     }
 
     if (o == aPlayerListDockVisible) {
-        playerListDock->setVisible(aPlayerListDockVisible->isChecked());
+        playerListDock->setHidden(!aPlayerListDockVisible->isChecked());
         aPlayerListDockFloating->setEnabled(aPlayerListDockVisible->isChecked());
         return;
     }
 
     if (o == aReplayDockVisible) {
-        replayDock->setVisible(aReplayDockVisible->isChecked());
+        replayDock->setHidden(!aReplayDockVisible->isChecked());
         aReplayDockFloating->setEnabled(aReplayDockVisible->isChecked());
         return;
     }
