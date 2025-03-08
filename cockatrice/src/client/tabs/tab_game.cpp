@@ -1443,9 +1443,9 @@ void TabGame::loadLayout()
         playerListDock->setMaximumSize(layouts.getGamePlayerListSize());
     }
 
-    aCardInfoDockVisible->setChecked(cardInfoDock->isVisible());
-    aMessageLayoutDockVisible->setChecked(messageLayoutDock->isVisible());
-    aPlayerListDockVisible->setChecked(playerListDock->isVisible());
+    aCardInfoDockVisible->setChecked(!cardInfoDock->isHidden());
+    aMessageLayoutDockVisible->setChecked(!messageLayoutDock->isHidden());
+    aPlayerListDockVisible->setChecked(!playerListDock->isHidden());
 
     aCardInfoDockFloating->setEnabled(aCardInfoDockVisible->isChecked());
     aMessageLayoutDockFloating->setEnabled(aMessageLayoutDockVisible->isChecked());
@@ -1456,7 +1456,7 @@ void TabGame::loadLayout()
     aPlayerListDockFloating->setChecked(playerListDock->isFloating());
 
     if (replayDock) {
-        aReplayDockVisible->setChecked(replayDock->isVisible());
+        aReplayDockVisible->setChecked(!replayDock->isHidden());
         aReplayDockFloating->setEnabled(aReplayDockVisible->isChecked());
         aReplayDockFloating->setChecked(replayDock->isFloating());
     }
