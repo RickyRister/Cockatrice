@@ -1,7 +1,5 @@
 #include "tags_settings.h"
 
-#define MAX_RECENT_DECK_COUNT 10
-
 TagsSettings::TagsSettings(const QString &settingPath, QObject *parent)
     : SettingsManager(settingPath + "tags.ini", parent)
 {
