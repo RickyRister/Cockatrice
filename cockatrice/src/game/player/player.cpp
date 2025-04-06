@@ -1839,6 +1839,7 @@ void Player::actCreateToken()
     lastTokenColor = dlg.getColor();
     lastTokenAnnotation = dlg.getAnnotation();
     lastTokenDestroy = dlg.getDestroy();
+    lastTokenFaceDown = dlg.getFaceDown();
     aCreateAnotherToken->setEnabled(true);
     aCreateAnotherToken->setText(tr("C&reate another %1 token").arg(lastTokenName));
     actCreateAnotherToken();
@@ -1857,6 +1858,7 @@ void Player::actCreateAnotherToken()
     cmd.set_pt(lastTokenPT.toStdString());
     cmd.set_annotation(lastTokenAnnotation.toStdString());
     cmd.set_destroy_on_zone_change(lastTokenDestroy);
+    cmd.set_face_down(lastTokenFaceDown);
     cmd.set_x(-1);
     cmd.set_y(lastTokenTableRow);
 

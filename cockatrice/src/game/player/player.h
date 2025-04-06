@@ -292,7 +292,7 @@ private:
     int defaultNumberBottomCards = 1;
     int defaultNumberDieRoll = 20;
     QString lastTokenName, lastTokenColor, lastTokenPT, lastTokenAnnotation;
-    bool lastTokenDestroy;
+    bool lastTokenDestroy, lastTokenFaceDown;
     int lastTokenTableRow;
     ServerInfo_User *userInfo;
     int id;
