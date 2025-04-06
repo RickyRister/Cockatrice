@@ -386,16 +386,19 @@ void Server_Player::revealTopCardIfNeeded(Server_CardZone *zone, GameEventStorag
     }
 }
 
-static Event_CreateToken makeCreateTokenEvent(Server_CardZone *zone, Server_Card *card, int xCoord, int yCoord)
+static Event_CreateToken
+makeCreateTokenEvent(Server_CardZone *zone, Server_Card *card, int xCoord, int yCoord, bool showInfo = true)
 {
     Event_CreateToken event;
     event.set_zone_name(zone->getName().toStdString());
     event.set_card_id(card->getId());
-    event.set_card_name(card->getName().toStdString());
-    event.set_card_provider_id(card->getProviderId().toStdString());
-    event.set_color(card->getColor().toStdString());
-    event.set_pt(card->getPT().toStdString());
-    event.set_annotation(card->getAnnotation().toStdString());
+    if (showInfo) {
+        event.set_card_name(card->getName().toStdString());
+        event.set_card_provider_id(card->getProviderId().toStdString());
+        event.set_color(card->getColor().toStdString());
+        event.set_pt(card->getPT().toStdString());
+        event.set_annotation(card->getAnnotation().toStdString());
+    }
     event.set_destroy_on_zone_change(card->getDestroyOnZoneChange());
     event.set_x(xCoord);
     event.set_y(yCoord);
@@ -1471,7 +1474,8 @@ Server_Player::cmdCreateToken(const Command_CreateToken &cmd, ResponseContainer 
     const QString cardName = nameFromStdString(cmd.card_name());
     const QString cardProviderId = nameFromStdString(cmd.card_provider_id());
     if (zone->hasCoords()) {
-        xCoord = zone->getFreeGridColumn(xCoord, yCoord, cardName, false);
+        bool dontStackSameName = cmd.face_down();
+        xCoord = zone->getFreeGridColumn(xCoord, yCoord, cardName, dontStackSameName);
     }
     if (xCoord < 0) {
         xCoord = 0;
@@ -1486,9 +1490,10 @@ Server_Player::cmdCreateToken(const Command_CreateToken &cmd, ResponseContainer 
     card->setColor(nameFromStdString(cmd.color()));
     card->setAnnotation(nameFromStdString(cmd.annotation()));
     card->setDestroyOnZoneChange(cmd.destroy_on_zone_change());
+    card->setFaceDown(cmd.face_down());
 
     zone->insertCard(card, xCoord, yCoord);
-    ges.enqueueGameEvent(makeCreateTokenEvent(zone, card, xCoord, yCoord), playerId);
+    sendCreateTokenEvents(zone, card, xCoord, yCoord, ges);
 
     // check if the token is a replacement for an existing card
     if (!targetCard) {
@@ -1617,6 +1622,37 @@ Server_Player::cmdCreateToken(const Command_CreateToken &cmd, ResponseContainer 
     }
 
     return Response::RespOk;
+}
+
+/**
+ * Creates and sends the events required to properly communicate the given token creation.
+ * Primarily created to handle creating face-down tokens.
+ */
+void Server_Player::sendCreateTokenEvents(Server_CardZone *zone,
+                                          Server_Card *card,
+                                          int xCoord,
+                                          int yCoord,
+                                          GameEventStorage &ges)
+{
+    // Token is not face-down; things are easy and life is good.
+    if (!card->getFaceDown()) {
+        ges.enqueueGameEvent(makeCreateTokenEvent(zone, card, xCoord, yCoord), playerId);
+        return;
+    }
+
+    // Token is face-down. We have to send different info to each player
+    ges.enqueueGameEvent(makeCreateTokenEvent(zone, card, xCoord, yCoord, true), playerId,
+                         GameEventStorageItem::SendToPrivate, playerId);
+    ges.enqueueGameEvent(makeCreateTokenEvent(zone, card, xCoord, yCoord, false), playerId,
+                         GameEventStorageItem::SendToOthers);
+
+    // Event_CreateToken does not communicate attributes, so we need to send attribute event afterward
+    Event_SetCardAttr event;
+    event.set_zone_name(zone->getName().toStdString());
+    event.set_card_id(card->getId());
+    event.set_attribute(AttrFaceDown);
+    event.set_attr_value("1");
+    ges.enqueueGameEvent(event, playerId);
 }
 
 Response::ResponseCode
