@@ -27,6 +27,7 @@ public:
     QString getPT() const;
     QString getAnnotation() const;
     bool getDestroy() const;
+    bool getFaceDown() const;
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -46,6 +47,7 @@ private:
     QComboBox *colorEdit;
     QLineEdit *nameEdit, *ptEdit, *annotationEdit;
     QCheckBox *destroyCheckBox;
+    QCheckBox *faceDownCheckBox;
     QRadioButton *chooseTokenFromAllRadioButton, *chooseTokenFromDeckRadioButton;
     CardInfoPictureWidget *pic;
     QTreeView *chooseTokenView;
