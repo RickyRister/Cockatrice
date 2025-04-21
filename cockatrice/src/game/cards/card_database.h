@@ -84,7 +84,7 @@ public:
 
     CardSetPtr getSet(const QString &setName);
     bool isProviderIdForPreferredPrinting(const QString &cardName, const QString &providerId);
-    static PrintingInfo getSetInfoForCard(const CardInfoPtr &_card);
+    static PrintingInfo getPrintingInfo(const CardInfoPtr &_card);
     const CardNameMap &getCardList() const
     {
         return cards;

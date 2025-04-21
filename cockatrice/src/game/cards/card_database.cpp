@@ -418,7 +418,7 @@ bool CardDatabase::isProviderIdForPreferredPrinting(const QString &cardName, con
     return providerId == getPreferredPrintingProviderIdForCard(cardName);
 }
 
-PrintingInfo CardDatabase::getSetInfoForCard(const CardInfoPtr &_card)
+PrintingInfo CardDatabase::getPrintingInfo(const CardInfoPtr &_card)
 {
     const CardInfoPerSetMap &setMap = _card->getSets();
     if (setMap.empty()) {

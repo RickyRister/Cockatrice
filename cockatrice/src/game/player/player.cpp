@@ -4005,7 +4005,7 @@ void Player::addRelatedCardView(const CardItem *card, QMenu *cardMenu)
         return;
     }
 
-    const auto &currentCardSet = CardDatabase::getSetInfoForCard(cardInfo);
+    const auto &currentCardSet = CardDatabase::getPrintingInfo(cardInfo);
 
     cardMenu->addSeparator();
     auto viewRelatedCards = new QMenu(tr("View related cards"));
@@ -4034,7 +4034,7 @@ void Player::addRelatedCardActions(const CardItem *card, QMenu *cardMenu)
         return;
     }
 
-    const auto &currentCardSet = CardDatabase::getSetInfoForCard(cardInfo);
+    const auto &currentCardSet = CardDatabase::getPrintingInfo(cardInfo);
 
     cardMenu->addSeparator();
     int index = 0;

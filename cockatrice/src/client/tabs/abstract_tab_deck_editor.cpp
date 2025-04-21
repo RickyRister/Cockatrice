@@ -124,8 +124,8 @@ void AbstractTabDeckEditor::actDecrementCardFromSideboard(CardInfoPtr info)
 
 void AbstractTabDeckEditor::actSwapCard(CardInfoPtr info, QString zoneName)
 {
-    QString providerId = CardDatabaseManager::getInstance()->getSetInfoForCard(info).getProperty("uuid");
-    QString collectorNumber = CardDatabaseManager::getInstance()->getSetInfoForCard(info).getProperty("num");
+    QString providerId = CardDatabaseManager::getInstance()->getPrintingInfo(info).getProperty("uuid");
+    QString collectorNumber = CardDatabaseManager::getInstance()->getPrintingInfo(info).getProperty("num");
 
     QModelIndex foundCard = deckDockWidget->deckModel->findCard(info->getName(), zoneName, providerId, collectorNumber);
     if (!foundCard.isValid()) {
