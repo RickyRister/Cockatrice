@@ -73,14 +73,14 @@ void PrintingSelectorCardSortingWidget::updateSortSetting()
  * - Contained in Deck
  * - Potential Cards in Deck
  *
- * @param cardInfoPerSets The list of card sets to be sorted.
+ * @param sets The list of card sets to be sorted.
  * @return A sorted list of card sets.
  */
-QList<PrintingInfo> PrintingSelectorCardSortingWidget::sortSets(const CardInfoPerSetMap &cardInfoPerSets)
+QList<PrintingInfo> PrintingSelectorCardSortingWidget::sortSets(const SetToPrintingInfoMap &sets)
 {
     QList<CardSetPtr> sortedSets;
 
-    for (const auto &cardInfoPerSetList : cardInfoPerSets) {
+    for (const auto &cardInfoPerSetList : sets) {
         for (const auto &set : cardInfoPerSetList) {
             sortedSets << set.getPtr();
             break;
@@ -101,7 +101,7 @@ QList<PrintingInfo> PrintingSelectorCardSortingWidget::sortSets(const CardInfoPe
     QList<PrintingInfo> sortedCardInfoPerSets;
     // Reconstruct sorted list of CardInfoPerSet
     for (const auto &set : sortedSets) {
-        for (auto it = cardInfoPerSets.begin(); it != cardInfoPerSets.end(); ++it) {
+        for (auto it = sets.begin(); it != sets.end(); ++it) {
             for (const auto &cardInfoPerSet : it.value()) {
                 if (cardInfoPerSet.getPtr() == set) {
                     if (!sortedCardInfoPerSets.contains(cardInfoPerSet)) {
@@ -188,7 +188,7 @@ QList<PrintingInfo> PrintingSelectorCardSortingWidget::prependPrintingsInDeck(co
         return {};
     }
 
-    CardInfoPerSetMap cardInfoPerSets = selectedCard->getSets();
+    SetToPrintingInfoMap cardInfoPerSets = selectedCard->getSets();
     QList<QPair<PrintingInfo, int>> countList;
 
     // Collect sets with their counts

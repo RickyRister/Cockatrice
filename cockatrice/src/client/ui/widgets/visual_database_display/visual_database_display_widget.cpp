@@ -210,7 +210,7 @@ void VisualDatabaseDisplayWidget::populateCards()
 
         if (CardInfoPtr info = CardDatabaseManager::getInstance()->getCard(name.toString())) {
             if (setFilter) {
-                CardInfoPerSetMap setMap = info->getSets();
+                SetToPrintingInfoMap setMap = info->getSets();
                 if (setMap.contains(setFilter->term())) {
                     for (PrintingInfo cardSetInstance : setMap[setFilter->term()]) {
                         addCard(CardDatabaseManager::getInstance()->getCardByNameAndProviderId(

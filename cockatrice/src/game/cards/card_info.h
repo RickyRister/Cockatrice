@@ -23,7 +23,7 @@ class ICardDatabaseParser;
 typedef QMap<QString, QString> QStringMap;
 typedef QSharedPointer<CardInfo> CardInfoPtr;
 typedef QSharedPointer<CardSet> CardSetPtr;
-typedef QMap<QString, QList<PrintingInfo>> CardInfoPerSetMap;
+typedef QMap<QString, QList<PrintingInfo>> SetToPrintingInfoMap;
 
 typedef QHash<QString, CardInfoPtr> CardNameMap;
 typedef QHash<QString, CardSetPtr> SetNameMap;
@@ -202,7 +202,7 @@ private:
     // the cards thare are reverse-related to me
     QList<CardRelation *> reverseRelatedCardsToMe;
     // card sets
-    CardInfoPerSetMap sets;
+    SetToPrintingInfoMap sets;
     // cached set names
     QString setsNames;
     // positioning properties; used by UI
@@ -218,7 +218,7 @@ public:
                       QVariantHash _properties,
                       const QList<CardRelation *> &_relatedCards,
                       const QList<CardRelation *> &_reverseRelatedCards,
-                      CardInfoPerSetMap _sets,
+                      SetToPrintingInfoMap _sets,
                       bool _cipt,
                       bool _landscapeOrientation,
                       int _tableRow,
@@ -241,7 +241,7 @@ public:
                                    QVariantHash _properties,
                                    const QList<CardRelation *> &_relatedCards,
                                    const QList<CardRelation *> &_reverseRelatedCards,
-                                   CardInfoPerSetMap _sets,
+                                   SetToPrintingInfoMap _sets,
                                    bool _cipt,
                                    bool _landscapeOrientation,
                                    int _tableRow,
@@ -309,7 +309,7 @@ public:
     {
         return properties.contains(propertyName);
     }
-    const CardInfoPerSetMap &getSets() const
+    const SetToPrintingInfoMap &getSets() const
     {
         return sets;
     }

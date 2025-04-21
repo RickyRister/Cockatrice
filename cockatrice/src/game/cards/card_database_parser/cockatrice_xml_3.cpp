@@ -155,7 +155,7 @@ void CockatriceXml3Parser::loadCardsFromXml(QXmlStreamReader &xml)
             QVariantHash properties = QVariantHash();
             QString colors = QString("");
             QList<CardRelation *> relatedCards, reverseRelatedCards;
-            auto _sets = CardInfoPerSetMap();
+            auto _sets = SetToPrintingInfoMap();
             int tableRow = 0;
             bool cipt = false;
             bool landscapeOrientation = false;
@@ -333,7 +333,7 @@ static QXmlStreamWriter &operator<<(QXmlStreamWriter &xml, const CardInfoPtr &in
     }
 
     // sets
-    const CardInfoPerSetMap sets = info->getSets();
+    const SetToPrintingInfoMap sets = info->getSets();
     for (const auto &cardInfoPerSetList : sets) {
         for (const PrintingInfo &set : cardInfoPerSetList) {
             xml.writeStartElement("set");

@@ -162,7 +162,7 @@ void DlgEditTokens::actAddToken()
     }
 
     QString setName = CardSet::TOKENS_SETNAME;
-    CardInfoPerSetMap sets;
+    SetToPrintingInfoMap sets;
     sets[setName].append(PrintingInfo(databaseModel->getDatabase()->getSet(setName)));
     CardInfoPtr card = CardInfo::newInstance(name, "", true, QVariantHash(), QList<CardRelation *>(),
                                              QList<CardRelation *>(), sets, false, false, -1, false);
