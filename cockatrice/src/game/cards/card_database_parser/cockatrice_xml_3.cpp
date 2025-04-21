@@ -334,8 +334,8 @@ static QXmlStreamWriter &operator<<(QXmlStreamWriter &xml, const CardInfoPtr &in
 
     // sets
     const SetToPrintingInfoMap sets = info->getSets();
-    for (const auto &cardInfoPerSetList : sets) {
-        for (const PrintingInfo &set : cardInfoPerSetList) {
+    for (const auto &printingInfoList : sets) {
+        for (const PrintingInfo &set : printingInfoList) {
             xml.writeStartElement("set");
             xml.writeAttribute("rarity", set.getProperty("rarity"));
             xml.writeAttribute("muId", set.getProperty("muid"));

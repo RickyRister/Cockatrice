@@ -221,8 +221,8 @@ void PrintingSelector::getAllSetsForCurrentCard()
         return;
     }
 
-    SetToPrintingInfoMap cardInfoPerSets = selectedCard->getSets();
-    const QList<PrintingInfo> sortedSets = sortToolBar->sortSets(cardInfoPerSets);
+    SetToPrintingInfoMap printingInfos = selectedCard->getSets();
+    const QList<PrintingInfo> sortedSets = sortToolBar->sortSets(printingInfos);
     const QList<PrintingInfo> filteredSets =
         sortToolBar->filterSets(sortedSets, searchBar->getSearchText().trimmed().toLower());
     QList<PrintingInfo> setsToUse;

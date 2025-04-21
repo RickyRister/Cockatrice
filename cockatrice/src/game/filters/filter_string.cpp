@@ -124,8 +124,8 @@ static void setupParserRules()
         return [=](const CardData &x) -> bool {
             QList<PrintingInfo> infos;
             for (const auto &setsValue : x->getSets().values()) {
-                for (const auto &cardInfoPerSet : setsValue) {
-                    infos.append(cardInfoPerSet);
+                for (const auto &printingInfo : setsValue) {
+                    infos.append(printingInfo);
                 }
             }
 

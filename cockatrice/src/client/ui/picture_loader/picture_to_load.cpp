@@ -13,8 +13,8 @@ PictureToLoad::PictureToLoad(CardInfoPtr _card)
     : card(std::move(_card)), urlTemplates(SettingsCache::instance().downloads().getAllURLs())
 {
     if (card) {
-        for (const auto &cardInfoPerSetList : card->getSets()) {
-            for (const auto &set : cardInfoPerSetList) {
+        for (const auto &printingInfoList : card->getSets()) {
+            for (const auto &set : printingInfoList) {
                 sortedSets << set.getPtr();
             }
         }
@@ -26,8 +26,8 @@ PictureToLoad::PictureToLoad(CardInfoPtr _card)
         // If the user hasn't disabled arts other than their personal preference...
         if (!SettingsCache::instance().getOverrideAllCardArtWithPersonalPreference()) {
             // If the pixmapCacheKey corresponds to a specific set, we have to try to load it first.
-            for (const auto &cardInfoPerSetList : card->getSets()) {
-                for (const auto &set : cardInfoPerSetList) {
+            for (const auto &printingInfoList : card->getSets()) {
+                for (const auto &set : printingInfoList) {
                     if (QLatin1String("card_") + card->getName() + QString("_") + QString(set.getProperty("uuid")) ==
                         card->getPixmapCacheKey()) {
                         long long setIndex = sortedSets.indexOf(set.getPtr());

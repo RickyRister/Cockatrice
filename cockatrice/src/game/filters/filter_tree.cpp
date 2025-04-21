@@ -215,8 +215,8 @@ bool FilterItem::acceptText(const CardInfoPtr info) const
 bool FilterItem::acceptSet(const CardInfoPtr info) const
 {
     bool status = false;
-    for (const auto &cardInfoPerSetList : info->getSets()) {
-        for (const auto &set : cardInfoPerSetList) {
+    for (const auto &printingInfoList : info->getSets()) {
+        for (const auto &set : printingInfoList) {
             if (set.getPtr()->getShortName().compare(term, Qt::CaseInsensitive) == 0 ||
                 set.getPtr()->getLongName().compare(term, Qt::CaseInsensitive) == 0) {
                 status = true;
@@ -350,8 +350,8 @@ bool FilterItem::acceptRarity(const CardInfoPtr info) const
         }
     }
 
-    for (const auto &cardInfoPerSetList : info->getSets()) {
-        for (const auto &set : cardInfoPerSetList) {
+    for (const auto &printingInfoList : info->getSets()) {
+        for (const auto &set : printingInfoList) {
             if (set.getProperty("rarity").compare(converted_term, Qt::CaseInsensitive) == 0) {
                 return true;
             }

@@ -267,8 +267,8 @@ CardInfoPtr CardInfo::newInstance(const QString &_name,
                                  _sets, _cipt, _landscapeOrientation, _tableRow, _upsideDownArt));
     ptr->setSmartPointer(ptr);
 
-    for (const auto &cardInfoPerSetList : _sets) {
-        for (const PrintingInfo &set : cardInfoPerSetList) {
+    for (const auto &printingInfoList : _sets) {
+        for (const PrintingInfo &set : printingInfoList) {
             set.getPtr()->append(ptr);
             break;
         }
@@ -316,8 +316,8 @@ void CardInfo::refreshCachedSetNames()
 {
     QStringList setList;
     // update the cached list of set names
-    for (const auto &cardInfoPerSetList : sets) {
-        for (const auto &set : cardInfoPerSetList) {
+    for (const auto &printingInfoList : sets) {
+        for (const auto &set : printingInfoList) {
             if (set.getPtr()->getEnabled()) {
                 setList << set.getPtr()->getShortName();
             }

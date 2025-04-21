@@ -80,8 +80,8 @@ QList<PrintingInfo> PrintingSelectorCardSortingWidget::sortSets(const SetToPrint
 {
     QList<CardSetPtr> sortedSets;
 
-    for (const auto &cardInfoPerSetList : sets) {
-        for (const auto &set : cardInfoPerSetList) {
+    for (const auto &printingInfoList : sets) {
+        for (const auto &set : printingInfoList) {
             sortedSets << set.getPtr();
             break;
         }
@@ -98,14 +98,14 @@ QList<PrintingInfo> PrintingSelectorCardSortingWidget::sortSets(const SetToPrint
         std::sort(sortedSets.begin(), sortedSets.end(), SetReleaseDateComparator());
     }
 
-    QList<PrintingInfo> sortedCardInfoPerSets;
-    // Reconstruct sorted list of CardInfoPerSet
+    QList<PrintingInfo> sortedPrintingInfos;
+    // Reconstruct sorted list of PrintingInfo
     for (const auto &set : sortedSets) {
         for (auto it = sets.begin(); it != sets.end(); ++it) {
-            for (const auto &cardInfoPerSet : it.value()) {
-                if (cardInfoPerSet.getPtr() == set) {
-                    if (!sortedCardInfoPerSets.contains(cardInfoPerSet)) {
-                        sortedCardInfoPerSets << cardInfoPerSet;
+            for (const auto &printingInfo : it.value()) {
+                if (printingInfo.getPtr() == set) {
+                    if (!sortedPrintingInfos.contains(printingInfo)) {
+                        sortedPrintingInfos << printingInfo;
                     }
                 }
             }
@@ -113,10 +113,10 @@ QList<PrintingInfo> PrintingSelectorCardSortingWidget::sortSets(const SetToPrint
     }
 
     if (descendingSort) {
-        std::reverse(sortedCardInfoPerSets.begin(), sortedCardInfoPerSets.end());
+        std::reverse(sortedPrintingInfos.begin(), sortedPrintingInfos.end());
     }
 
-    return sortedCardInfoPerSets;
+    return sortedPrintingInfos;
 }
 
 /**
@@ -188,19 +188,19 @@ QList<PrintingInfo> PrintingSelectorCardSortingWidget::prependPrintingsInDeck(co
         return {};
     }
 
-    SetToPrintingInfoMap cardInfoPerSets = selectedCard->getSets();
+    SetToPrintingInfoMap printingInfos = selectedCard->getSets();
     QList<QPair<PrintingInfo, int>> countList;
 
     // Collect sets with their counts
-    for (const auto &cardInfoPerSetList : cardInfoPerSets) {
-        for (const auto &cardInfoPerSet : cardInfoPerSetList) {
+    for (const auto &printingInfoList : printingInfos) {
+        for (const auto &printingInfo : printingInfoList) {
             QModelIndex find_card =
-                deckModel->findCard(selectedCard->getName(), DECK_ZONE_MAIN, cardInfoPerSet.getProperty("uuid"));
+                deckModel->findCard(selectedCard->getName(), DECK_ZONE_MAIN, printingInfo.getProperty("uuid"));
             if (find_card.isValid()) {
                 int count =
                     deckModel->data(find_card, Qt::DisplayRole).toInt(); // Ensure the count is treated as an integer
                 if (count > 0) {
-                    countList.append(qMakePair(cardInfoPerSet, count));
+                    countList.append(qMakePair(printingInfo, count));
                 }
             }
             break;
