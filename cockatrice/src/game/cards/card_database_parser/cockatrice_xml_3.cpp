@@ -204,27 +204,27 @@ void CockatriceXml3Parser::loadCardsFromXml(QXmlStreamReader &xml)
                     // NOTE: attributes must be read before readElementText()
                     QXmlStreamAttributes attrs = xml.attributes();
                     QString setName = xml.readElementText(QXmlStreamReader::IncludeChildElements);
-                    PrintingInfo setInfo(internalAddSet(setName));
+                    PrintingInfo printingInfo(internalAddSet(setName));
                     if (attrs.hasAttribute("muId")) {
-                        setInfo.setProperty("muid", attrs.value("muId").toString());
+                        printingInfo.setProperty("muid", attrs.value("muId").toString());
                     }
 
                     if (attrs.hasAttribute("muId")) {
-                        setInfo.setProperty("uuid", attrs.value("uuId").toString());
+                        printingInfo.setProperty("uuid", attrs.value("uuId").toString());
                     }
 
                     if (attrs.hasAttribute("picURL")) {
-                        setInfo.setProperty("picurl", attrs.value("picURL").toString());
+                        printingInfo.setProperty("picurl", attrs.value("picURL").toString());
                     }
 
                     if (attrs.hasAttribute("num")) {
-                        setInfo.setProperty("num", attrs.value("num").toString());
+                        printingInfo.setProperty("num", attrs.value("num").toString());
                     }
 
                     if (attrs.hasAttribute("rarity")) {
-                        setInfo.setProperty("rarity", attrs.value("rarity").toString());
+                        printingInfo.setProperty("rarity", attrs.value("rarity").toString());
                     }
-                    _sets[setName].append(setInfo);
+                    _sets[setName].append(printingInfo);
                     // related cards
                 } else if (xmlName == "related" || xmlName == "reverse-related") {
                     CardRelation::AttachType attach = CardRelation::DoesNotAttach;

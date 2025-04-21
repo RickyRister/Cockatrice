@@ -179,12 +179,12 @@ void CockatriceXml4Parser::loadCardsFromXml(QXmlStreamReader &xml)
                     QString setName = xml.readElementText(QXmlStreamReader::IncludeChildElements);
                     auto set = internalAddSet(setName);
                     if (set->getEnabled()) {
-                        PrintingInfo setInfo(set);
+                        PrintingInfo printingInfo(set);
                         for (QXmlStreamAttribute attr : attrs) {
                             QString attrName = attr.name().toString();
                             if (attrName == "picURL")
                                 attrName = "picurl";
-                            setInfo.setProperty(attrName, attr.value().toString());
+                            printingInfo.setProperty(attrName, attr.value().toString());
                         }
 
                         // This is very much a hack and not the right place to
@@ -194,8 +194,8 @@ void CockatriceXml4Parser::loadCardsFromXml(QXmlStreamReader &xml)
                         // However, this is also true of the `set->getEnabled()`
                         // check above (which is currently bugged as well), so
                         // we'll fix both at the same time.
-                        if (includeRebalancedCards || setInfo.getProperty("isRebalanced") != "true") {
-                            _sets[setName].append(setInfo);
+                        if (includeRebalancedCards || printingInfo.getProperty("isRebalanced") != "true") {
+                            _sets[setName].append(printingInfo);
                         }
                     }
                     // related cards
