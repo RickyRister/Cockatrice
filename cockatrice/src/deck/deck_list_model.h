@@ -100,7 +100,7 @@ public:
                          const QString &cardNumber = "") const;
     QModelIndex addPreferredPrintingCard(const QString &cardName, const QString &zoneName, bool abAddAnyway);
     QModelIndex addCard(const ::QString &cardName,
-                        const CardInfoPerSet &cardInfoSet,
+                        const PrintingInfo &cardInfoSet,
                         const QString &zoneName,
                         bool abAddAnyway = false);
     void sort(int column, Qt::SortOrder order) override;

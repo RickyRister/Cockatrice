@@ -12,7 +12,7 @@
 SplitCardPart::SplitCardPart(const QString &_name,
                              const QString &_text,
                              const QVariantHash &_properties,
-                             const CardInfoPerSet _setInfo)
+                             const PrintingInfo _setInfo)
     : name(_name), text(_text), properties(_properties), setInfo(_setInfo)
 {
 }
@@ -113,7 +113,7 @@ CardInfoPtr OracleImporter::addCard(QString name,
                                     bool isToken,
                                     QVariantHash properties,
                                     QList<CardRelation *> &relatedCards,
-                                    CardInfoPerSet setInfo)
+                                    PrintingInfo setInfo)
 {
     // Workaround for card name weirdness
     name = name.replace("Æ", "AE");
@@ -226,7 +226,7 @@ int OracleImporter::importCardsFromSet(const CardSetPtr &currentSet, const QList
     static constexpr bool isToken = false;
     static const QList<QString> setsWithCardsWithSameNameButDifferentText = {"UST"};
     QVariantHash properties;
-    CardInfoPerSet setInfo;
+    PrintingInfo setInfo;
     QList<CardRelation *> relatedCards;
     QList<QString> allNameProps;
 
@@ -265,7 +265,7 @@ int OracleImporter::importCardsFromSet(const CardSetPtr &currentSet, const QList
         }
 
         // per-set properties
-        setInfo = CardInfoPerSet(currentSet);
+        setInfo = PrintingInfo(currentSet);
         QMapIterator it2(setInfoProperties);
         while (it2.hasNext()) {
             it2.next();

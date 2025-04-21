@@ -204,7 +204,7 @@ void CockatriceXml3Parser::loadCardsFromXml(QXmlStreamReader &xml)
                     // NOTE: attributes must be read before readElementText()
                     QXmlStreamAttributes attrs = xml.attributes();
                     QString setName = xml.readElementText(QXmlStreamReader::IncludeChildElements);
-                    CardInfoPerSet setInfo(internalAddSet(setName));
+                    PrintingInfo setInfo(internalAddSet(setName));
                     if (attrs.hasAttribute("muId")) {
                         setInfo.setProperty("muid", attrs.value("muId").toString());
                     }
@@ -335,7 +335,7 @@ static QXmlStreamWriter &operator<<(QXmlStreamWriter &xml, const CardInfoPtr &in
     // sets
     const CardInfoPerSetMap sets = info->getSets();
     for (const auto &cardInfoPerSetList : sets) {
-        for (const CardInfoPerSet &set : cardInfoPerSetList) {
+        for (const PrintingInfo &set : cardInfoPerSetList) {
             xml.writeStartElement("set");
             xml.writeAttribute("rarity", set.getProperty("rarity"));
             xml.writeAttribute("muId", set.getProperty("muid"));

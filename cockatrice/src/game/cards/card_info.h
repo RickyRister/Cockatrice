@@ -15,7 +15,7 @@
 inline Q_LOGGING_CATEGORY(CardInfoLog, "card_info");
 
 class CardInfo;
-class CardInfoPerSet;
+class PrintingInfo;
 class CardSet;
 class CardRelation;
 class ICardDatabaseParser;
@@ -23,7 +23,7 @@ class ICardDatabaseParser;
 typedef QMap<QString, QString> QStringMap;
 typedef QSharedPointer<CardInfo> CardInfoPtr;
 typedef QSharedPointer<CardSet> CardSetPtr;
-typedef QMap<QString, QList<CardInfoPerSet>> CardInfoPerSetMap;
+typedef QMap<QString, QList<PrintingInfo>> CardInfoPerSetMap;
 
 typedef QHash<QString, CardInfoPtr> CardNameMap;
 typedef QHash<QString, CardSetPtr> SetNameMap;
@@ -143,13 +143,13 @@ public:
     void defaultSort();
 };
 
-class CardInfoPerSet
+class PrintingInfo
 {
 public:
-    explicit CardInfoPerSet(const CardSetPtr &_set = QSharedPointer<CardSet>(nullptr));
-    ~CardInfoPerSet() = default;
+    explicit PrintingInfo(const CardSetPtr &_set = QSharedPointer<CardSet>(nullptr));
+    ~PrintingInfo() = default;
 
-    bool operator==(const CardInfoPerSet &other) const
+    bool operator==(const PrintingInfo &other) const
     {
         return this->set == other.set && this->properties == other.properties;
     }
@@ -399,7 +399,7 @@ public:
         return getSetProperty(set, "picurl");
     }
     QString getCorrectedName() const;
-    void addToSet(const CardSetPtr &_set, CardInfoPerSet _info = CardInfoPerSet());
+    void addToSet(const CardSetPtr &_set, PrintingInfo _info = PrintingInfo());
     void combineLegalities(const QVariantHash &props);
     void emitPixmapUpdated()
     {

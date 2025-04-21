@@ -215,7 +215,7 @@ void SetList::defaultSort()
     });
 }
 
-CardInfoPerSet::CardInfoPerSet(const CardSetPtr &_set) : set(_set)
+PrintingInfo::PrintingInfo(const CardSetPtr &_set) : set(_set)
 {
 }
 
@@ -268,7 +268,7 @@ CardInfoPtr CardInfo::newInstance(const QString &_name,
     ptr->setSmartPointer(ptr);
 
     for (const auto &cardInfoPerSetList : _sets) {
-        for (const CardInfoPerSet &set : cardInfoPerSetList) {
+        for (const PrintingInfo &set : cardInfoPerSetList) {
             set.getPtr()->append(ptr);
             break;
         }
@@ -289,7 +289,7 @@ QString CardInfo::getCorrectedName() const
     return result.remove(rmrx).replace(spacerx, space);
 }
 
-void CardInfo::addToSet(const CardSetPtr &_set, const CardInfoPerSet _info)
+void CardInfo::addToSet(const CardSetPtr &_set, const PrintingInfo _info)
 {
     if (!_set->contains(smartThis)) {
         _set->append(smartThis);
