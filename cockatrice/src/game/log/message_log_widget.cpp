@@ -343,10 +343,18 @@ void MessageLogWidget::logMoveCard(Player *player,
         finalStr = tr("%1 moves %2%3 to sideboard.");
     } else if (targetZoneName == STACK_ZONE_NAME) {
         soundEngine->playSound("play_card");
-        finalStr = tr("%1 plays %2%3.");
+        if (card->getFaceDown()) {
+            finalStr = tr("%1 plays %2%3 face down.");
+        } else {
+            finalStr = tr("%1 plays %2%3.");
+        }
     } else {
         fourthArg = targetZoneName;
-        finalStr = tr("%1 moves %2%3 to custom zone '%4'.");
+        if (card->getFaceDown()) {
+            finalStr = tr("%1 moves %2%3 to custom zone '%4' face down.");
+        } else {
+            finalStr = tr("%1 moves %2%3 to custom zone '%4'.");
+        }
     }
 
     QString message = finalStr.arg(sanitizeHtml(player->getPlayerInfo()->getName()), cardStr, nameFrom.second);
