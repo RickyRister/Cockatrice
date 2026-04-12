@@ -1067,10 +1067,24 @@ DeckEditorSettingsPage::DeckEditorSettingsPage()
     connect(&saveCardImagesToLocalStorageCheckBox, &QCheckBox::QT_STATE_CHANGED, &SettingsCache::instance(),
             &SettingsCache::setSaveCardImagesToLocalStorage);
 
-    localCardImageStorageNamingSchemeLineEdit =
-        new QLineEdit(SettingsCache::instance().getLocalCardImageStorageNamingScheme());
-    connect(localCardImageStorageNamingSchemeLineEdit, &QLineEdit::textChanged, &SettingsCache::instance(),
-            &SettingsCache::setLocalCardImageStorageNamingScheme);
+    localCardImageStorageNamingSchemeComboBox = new QComboBox;
+    for (const auto &scheme : CardPictureLoaderLocalSchemes::exportSchemes()) {
+        localCardImageStorageNamingSchemeComboBox->addItem(scheme.displayName, static_cast<int>(scheme.id));
+    }
+
+    int current = static_cast<int>(SettingsCache::instance().getLocalCardImageStorageNamingScheme());
+
+    int index = localCardImageStorageNamingSchemeComboBox->findData(current);
+    if (index >= 0) {
+        localCardImageStorageNamingSchemeComboBox->setCurrentIndex(index);
+    }
+
+    connect(localCardImageStorageNamingSchemeComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this,
+            [this](int index) {
+                auto scheme = static_cast<CardPictureLoaderLocalSchemes::NamingScheme>(
+                    localCardImageStorageNamingSchemeComboBox->itemData(index).toInt());
+                SettingsCache::instance().setLocalCardImageStorageNamingScheme(scheme);
+            });
 
     auto networkCacheLayout = new QHBoxLayout;
     networkCacheLayout->addStretch();
@@ -1093,7 +1107,7 @@ DeckEditorSettingsPage::DeckEditorSettingsPage()
 
     auto localCardImageStorageNamingSchemeLayout = new QHBoxLayout;
     localCardImageStorageNamingSchemeLayout->addWidget(&localCardImageStorageNamingSchemeLabel);
-    localCardImageStorageNamingSchemeLayout->addWidget(localCardImageStorageNamingSchemeLineEdit);
+    localCardImageStorageNamingSchemeLayout->addWidget(localCardImageStorageNamingSchemeComboBox);
 
     // Top Layout
     lpGeneralGrid->addWidget(&picDownloadCheckBox, 0, 0);
