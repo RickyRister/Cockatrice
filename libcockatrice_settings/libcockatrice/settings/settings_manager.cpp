@@ -159,6 +159,15 @@ QVariant SettingsManager::getValue(const QString &name, const QString &group, co
     return value;
 }
 
+void SettingsManager::batchWrite(std::function<void(QSettings &)> batchWriteFunction)
+{
+    auto settings = getSettings();
+    settings.setAtomicSyncRequired(false);
+    batchWriteFunction(settings);
+    settings.sync(); // single flush
+    settings.setAtomicSyncRequired(true);
+}
+
 /**
  * Calls sync on the underlying QSettings object
  */
