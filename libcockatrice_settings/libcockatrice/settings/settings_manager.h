@@ -27,10 +27,11 @@ public:
     void sync();
 
 protected:
+    QString settingPath;
     QString defaultGroup;
     QString defaultSubGroup;
 
-    mutable QSettings settings;
+    QSettings getSettings() const;
 
     void setValue(const QVariant &value, const QString &name);
 
