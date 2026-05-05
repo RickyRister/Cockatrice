@@ -10,6 +10,7 @@ SettingsManager::SettingsManager(const QString &_settingPath,
 
 QSettings SettingsManager::getSettings() const
 {
+    // Do not store the QSettings instance in a field, as that is not threadsafe (see #6747)
     return QSettings(settingPath, QSettings::IniFormat);
 }
 
